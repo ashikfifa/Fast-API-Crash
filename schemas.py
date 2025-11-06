@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 
 
 class User(BaseModel):
@@ -54,3 +54,12 @@ class BlogOut(BaseModel):
 class UserLogin(BaseModel):
     username: str
     password: str
+    
+    
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    username: Optional[str] = None
