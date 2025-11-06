@@ -5,8 +5,11 @@ from sqlalchemy.orm import Session
 from database import get_db
 from models import User
 
-router= APIRouter()
-@router.post('/create-user', response_model=UserOut, status_code=status.HTTP_201_CREATED, tags=["User"])
+router= APIRouter(
+    prefix="/user",
+    tags=["User"]
+)
+@router.post('/', response_model=UserOut, status_code=status.HTTP_201_CREATED)
 def create_user(payload: UserSchema, db: Session = Depends(get_db)):
     new_user = User(username=payload.username, email=payload.email, password=payload.password)
     db.add(new_user)
@@ -14,7 +17,7 @@ def create_user(payload: UserSchema, db: Session = Depends(get_db)):
     db.refresh(new_user)
     return new_user
 
-@router.get('/get-user', response_model=UserOut, status_code=status.HTTP_200_OK, tags=["User"])
+@router.get('/', response_model=UserOut, status_code=status.HTTP_200_OK)
 def get_user(id: int,db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id == id).first()
     if not user:
