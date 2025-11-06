@@ -3,9 +3,12 @@ from sqlalchemy.orm import Session
 from database import get_db
 from schemas import User as UserSchema, UserOut
 from models import User
+from utils import hash_password
 
 def create_user(payload: UserSchema, db: Session = Depends(get_db)):
-    new_user = User(username=payload.username, email=payload.email, password=payload.password)
+    # Hash the password before storing
+    hashed_password = hash_password(payload.password)
+    new_user = User(username=payload.username, email=payload.email, password=hashed_password)
     db.add(new_user)
     db.commit()
     db.refresh(new_user)

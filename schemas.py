@@ -24,6 +24,7 @@ class UserOut(BaseModel):
     id: int
     username: str
     email: str
+    password: str
     created_at: datetime
     blogs: List[BlogSimple] = []
     
@@ -48,3 +49,8 @@ class BlogOut(BaseModel):
     
     class Config:
         from_attributes = True
+
+
+class UserLogin(BaseModel):
+    username: str
+    password: str
