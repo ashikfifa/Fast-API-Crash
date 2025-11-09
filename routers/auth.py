@@ -5,13 +5,14 @@ from schemas import UserLogin,Token
 from models import User
 from utils import verify_password
 from auth_token import create_access_token
+from fastapi.security import OAuth2PasswordRequestForm
 
 router = APIRouter(
     tags=["Authentication"]
 )
 
 @router.post('/login')
-def login(request_body: UserLogin, db: Session = Depends(get_db)):
+def login(request_body: OAuth2PasswordRequestForm= Depends(), db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == request_body.username).first()
     
     if not user:
